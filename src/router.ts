@@ -36,6 +36,11 @@ export const router = new Router({
         path: resolveRouterPath('add-book'), // Add the new route
         title: 'Add New Book',
         render: () => html`<app-add-book></app-add-book>`
+      },
+      {
+        path: resolveRouterPath('edit-book/:id'), // Add the edit route
+        title: 'Edit Book',
+        render: ({ params }) => html`<app-add-book .bookId="${params.id}"></app-add-book>`
       }
     ]
   });

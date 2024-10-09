@@ -6,6 +6,7 @@ import { styles } from '../styles/shared-styles';
 @customElement('app-home')
 export class AppHome extends LitElement {
   @property({ type: Array }) customObjects = [];
+  @property({ type: Boolean }) showEditButtons = false;
   @property({ type: Boolean }) showDeleteButtons = false;
 
   static styles = [
@@ -58,6 +59,29 @@ export class AppHome extends LitElement {
         border-radius: 4px;
         font-size: 16px;
       }
+      .btn-edit {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin-left: 10px;
+        border-radius: 4px;
+        display: none;
+      }
+      .btn-edit.visible {
+        display: inline-block;
+      }
+      .btn-toggle-edit {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-left: 10px;
+        border-radius: 4px;
+        font-size: 16px;
+      }
     `
   ];
 
@@ -97,8 +121,19 @@ export class AppHome extends LitElement {
     }
   }
 
+  toggleEditButtons() {
+    this.showEditButtons = !this.showEditButtons;
+    if (this.showEditButtons) {
+      this.showDeleteButtons = false;
+    }
+  }
+
   toggleDeleteButtons() {
     this.showDeleteButtons = !this.showDeleteButtons;
+  }
+
+  handleEdit(bookId: string) {
+    window.location.href = `/edit-book/${bookId}`;
   }
 
   render() {
@@ -111,7 +146,7 @@ export class AppHome extends LitElement {
               <th>Book Name</th>
               <th>Author</th>
               <th>Price</th>
-              ${this.showDeleteButtons ? html`<th>Actions</th>` : ''}
+              ${this.showEditButtons || this.showDeleteButtons ? html`<th>Actions</th>` : ''}
             </tr>
           </thead>
           <tbody>
@@ -120,8 +155,9 @@ export class AppHome extends LitElement {
                 <td>${book.properties.book_name}</td>
                 <td>${book.properties.author}</td>
                 <td>$${book.properties.price}</td>
-                ${this.showDeleteButtons ? html`
+                ${this.showEditButtons || this.showDeleteButtons ? html`
                   <td>
+                    <button class="btn-edit ${this.showEditButtons ? 'visible' : ''}" @click="${() => this.handleEdit(book.id)}">Edit</button>
                     <button class="btn-delete ${this.showDeleteButtons ? 'visible' : ''}" @click="${() => this.deleteBook(book.id)}">Delete</button>
                   </td>
                 ` : ''}
@@ -130,7 +166,8 @@ export class AppHome extends LitElement {
           </tbody>
         </table>
         <a href="/add-book">Add New Book Record</a>
-        <button class="btn-toggle-delete" @click="${this.toggleDeleteButtons}">Delete Book Record</button>
+        <button class="btn-toggle-edit" @click="${this.toggleEditButtons}">Edit Record</button>
+        <button class="btn-toggle-delete" @click="${this.toggleDeleteButtons}">Delete Record</button>
       </div>
     `;
   }
