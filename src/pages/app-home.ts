@@ -3,9 +3,18 @@ import { property, customElement } from 'lit/decorators.js';
 import axios from 'axios';
 import { styles } from '../styles/shared-styles';
 
+interface Book {
+  id: string;
+  properties: {
+    book_name: string;
+    author: string;
+    price: string;
+  };
+}
+
 @customElement('app-home')
 export class AppHome extends LitElement {
-  @property({ type: Array }) customObjects = [];
+  @property({ type: Array }) customObjects: Book[] = [];
   @property({ type: Boolean }) showEditButtons = false;
   @property({ type: Boolean }) showDeleteButtons = false;
 
@@ -100,7 +109,7 @@ export class AppHome extends LitElement {
     try {
       const resp = await axios.get(customObjectsApiUrl, { headers });
       this.customObjects = resp.data.results;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching custom objects data:', error.response?.data || error.message);
     }
   }
@@ -115,7 +124,7 @@ export class AppHome extends LitElement {
     try {
       await axios.delete(deleteBookApiUrl, { headers });
       this.fetchData(); // Refresh the data after deletion
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting custom object:', error.response?.data || error.message);
       alert('Error deleting custom object in HubSpot');
     }

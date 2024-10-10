@@ -89,7 +89,7 @@ export class AppAddBook extends LitElement {
         price: bookProperties.price || ''
       };
       console.log('Fetched book details:', this.book);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching book details:', error.response?.data || error.message);
     } finally {
       this.isLoading = false;
@@ -127,7 +127,7 @@ export class AppAddBook extends LitElement {
         await axios.post(createBookApiUrl, bookData, { headers });
       }
       window.location.href = '/';
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving book:', error.response?.data || error.message);
       alert('Error saving book in HubSpot');
     }
