@@ -100,14 +100,10 @@ export class AppHome extends LitElement {
   }
 
   async fetchData() {
-    const customObjectsApiUrl = '/api/crm/v3/objects/books?properties=book_name,author,price';
-    const headers = {
-      Authorization: `Bearer ${import.meta.env.VITE_PRIVATE_APP_ACCESS}`,
-      'Content-Type': 'application/json'
-    };
+    const proxyApiUrl = 'http://localhost:3000/api/books'; // Updated proxy endpoint
 
     try {
-      const resp = await axios.get(customObjectsApiUrl, { headers });
+      const resp = await axios.get(proxyApiUrl);
       this.customObjects = resp.data.results;
     } catch (error: any) {
       console.error('Error fetching custom objects data:', error.response?.data || error.message);
@@ -115,20 +111,17 @@ export class AppHome extends LitElement {
   }
 
   async deleteBook(bookId: string) {
-    const deleteBookApiUrl = `/api/crm/v3/objects/books/${bookId}`;
-    const headers = {
-      Authorization: `Bearer ${import.meta.env.VITE_PRIVATE_APP_ACCESS}`,
-      'Content-Type': 'application/json'
-    };
+    const proxyDeleteUrl = `http://localhost:3000/api/books/${bookId}`; // Updated proxy endpoint
 
     try {
-      await axios.delete(deleteBookApiUrl, { headers });
+      await axios.delete(proxyDeleteUrl);
       this.fetchData(); // Refresh the data after deletion
     } catch (error: any) {
       console.error('Error deleting custom object:', error.response?.data || error.message);
       alert('Error deleting custom object in HubSpot');
     }
   }
+
 
   toggleEditButtons() {
     this.showEditButtons = !this.showEditButtons;

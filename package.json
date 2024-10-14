@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev-server": "vite --open",
-    "dev": "npm run dev-server",
+    "dev-backend": "node server.js",
+    "dev": "concurrently \"npm run dev-server\" \"npm run dev-backend\"",
     "dev-task": "vite",
     "deploy": "npx @azure/static-web-apps-cli login --no-use-keychain && npx @azure/static-web-apps-cli deploy",
     "build": "tsc && vite build",
@@ -28,6 +29,7 @@
     "workbox-precaching": "^7.1.0"
   },
   "devDependencies": {
+    "concurrently": "^9.0.1",
     "typescript": "^5.6.2",
     "vite": "^5.4.8",
     "vite-plugin-pwa": "^0.20.5"

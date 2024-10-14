@@ -28,14 +28,5 @@ export default defineConfig({
         enabled: true
       }
     })
-  ],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://api.hubapi.com',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
-  }
+  ]
 })
